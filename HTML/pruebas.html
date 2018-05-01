@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form action="">
+  First name: <input type="text" id="caja" name="fname"><br>
+  <input  type="hidden"	name="mundo" value="sds	" id ="prueba">
+</form>
+<button onclick="hacer()">Hola mundo</button>
+
+<p>Notice that the hidden field above is not shown to a user.</p>
+
+<script>
+	function hacer()
+	{
+		var hola = document.getElementById("prueba").value;
+	    document.getElementById("caja").value = "Hola mundo";	
+	    if(hola == "")
+	    	alert("null");
+	}
+</script>
+</body>
+</html>
