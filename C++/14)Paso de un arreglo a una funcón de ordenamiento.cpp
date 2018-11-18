@@ -10,7 +10,7 @@ void ordenarArreglo( int arreglo[], int numeroElementos )
 {
 	for( int i = 0; i < numeroElementos; i++ )		//Algoritmo de ordenamiento llamado "ordenamiento burbuja"
 	{
-		for( int j = 0; j < numeroElementos - 1-i; j++ )
+		for( int j = 0; j < numeroElementos - 1 - i; j++ )
 		{
 			if( arreglo[ j ] > arreglo[ j + 1 ] )
 			{

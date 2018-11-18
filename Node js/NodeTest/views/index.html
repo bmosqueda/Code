@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <meta charset="utf8">
+    <meta name="google-signin-client_id" 
+content="933231898225-11jt7ssk2eg02tnnrr4ba7vbv0ietfcc.apps.googleusercontent.com">
+    <link rel="stylesheet" href="/css/bulma.min.css">
+    <title>Google Sign In API</title>
+  </head>
+  <body>
+    <div class="container has-text-center">
+      <h1 class="title is-4">Google Sign In API TEST</h1>
+      <div class="field has-text-center">
+        <div class="control" style="height: 400px;width: 400px;">
+          <figure class="image is-square">
+            <img alt="Not signed in" id="userImage">
+          </figure>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <h1 class="title is-3" id="lblName"></h1>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <a href="#" type="button" class="button is-info" onclick="signOut();">Sign out</a>
+        </div>
+      </div>
+
+      <div class="fiel">
+        <label for="name">Token:</label>
+        <div class="control">
+          <input type="text" class="input" id="token">
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <!-- <a href="/logout" class="button is-danger">Salir</a> -->
+          <a href="#" class="button is-danger" onclick="signOut()">Salir</a>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <a href="/signIn/5" class="button is-danger">Entrar</a>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="/js/axios.min.js"></script>
+    <script>
+      function get(id) {return document.getElementById(id);}
+
+      let resLogin = {};
+      let autCode = {};
+
+      function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+         
+        resLogin = profile;  
+
+        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+        var id_token = googleUser.getAuthResponse().id_token;
+        autCode = googleUser;
+        // get('token').value = id_token;
+
+        window.axios.post(`/token`, {idToken: id_token})
+          .then(({data}) => {
+            console.log(data);
+            let image = get('userImage');
+            let lblName = get('lblName');
+
+            image.src = data.urlImage;
+            lblName.innerHTML = data.name;
+          })
+          .catch(err => console.log(err));
+      }
+
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
+  </body>
+</html>
